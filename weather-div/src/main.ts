@@ -1,24 +1,78 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import {getWeather} from "./weather.ts";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+type DivId = string | null | undefined;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const getDivById = (divId: DivId): HTMLDivElement | null => {
+    if (divId) {
+        return document.getElementById(divId) as HTMLDivElement | null;
+    }
+    return null;
+};
+
+const createDivInBody = (): HTMLDivElement => {
+    const newDiv = document.createElement('div');
+    document.body.appendChild(newDiv);
+    return newDiv;
+};
+
+const getOrCreateDiv = (divId: DivId): HTMLDivElement => {
+    const div = getDivById(divId);
+    return div ? div : createDivInBody();
+};
+
+const isValidNumber = (value: string): boolean => {
+    const numberRegex = /^-?\d+(\.\d+)?$/;
+    return numberRegex.test(value);
+}
+
+const injectLogic = (div: HTMLDivElement): void => {
+    div.innerHTML = `
+        <p>Injected logic!</p>
+        <label for="cityInput">Enter city:</label>
+        <input type="text" id="cityInput" placeholder="City">
+        <br>
+        <label for="latitudeInput">Enter latitude:</label>
+        <input type="text" id="latitudeInput" placeholder="Latitude" value="51.5">
+        <br>
+        <label for="longitudeInput">Enter longitude:</label>
+        <input type="text" id="longitudeInput" placeholder="Longitude" value="-0.11">
+        <br>
+        <button id="submitButton">Submit</button>
+    `;
+
+    const submitButton = div.querySelector('#submitButton') as HTMLButtonElement;
+
+    submitButton.addEventListener('click', async () => {
+        const cityInput = (div.querySelector('#cityInput') as HTMLInputElement).value;
+        const latitudeInput = (div.querySelector('#latitudeInput') as HTMLInputElement).value;
+        const longitudeInput = (div.querySelector('#longitudeInput') as HTMLInputElement).value;
+
+        if (!isValidNumber(latitudeInput)) {
+            alert('Invalid latitude');
+            return;
+        }
+        if (!isValidNumber(longitudeInput)) {
+            alert('Invalid longitude');
+            return;
+        }
+
+        console.log('City:', cityInput);
+        console.log('Latitude:', latitudeInput);
+        console.log('Longitude:', longitudeInput);
+
+        await getWeather(latitudeInput, longitudeInput);
+
+    });
+};
+
+const main = (divId?: DivId): void => {
+    const targetDiv = getOrCreateDiv(divId);
+    injectLogic(targetDiv);
+};
+
+// Read the div ID from the script tag attribute
+const scriptTag = document.currentScript;
+const divId = scriptTag?.getAttribute('data-div-id');
+
+// Run the main function with the div ID
+main(divId);
