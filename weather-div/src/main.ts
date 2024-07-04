@@ -13,22 +13,20 @@ const loadRobotoFont = () => {
 
 
 const injectLogic = (div: HTMLDivElement): void => {
+    div.style.all = 'unset'; // Reset all inherited styles
+    div.style.position = 'relative'; // Restore position property to allow positioning inside the div
     div.innerHTML = `
-<div style="width: 300px">
-<h2>weather forecast</h2>
-        <label for="cityInput">Enter city:</label>
-        <input type="text" id="cityInput" placeholder="City" value="london  ">
-        <br>
-        <label for="latitudeInput">Enter latitude:</label>
-        <input type="text" id="latitudeInput" placeholder="Latitude">
-        <br>
-        <label for="longitudeInput">Enter longitude:</label>
-        <input type="text" id="longitudeInput" placeholder="Longitude">
-        <br>
-        <button id="submitButton">Submit</button>
+<div style="width: 200px">
+    <h2 style="all: unset; font-size: 1.5em; margin: 0.5em 0;">Weather Forecast</h2>
+    <label for="cityInput" style="all: unset; display: block; margin: 0.5em 0;">Enter city:</label>
+    <input type="text" id="cityInput" placeholder="City" value="london" style="all: unset; display: block; width: 100%; padding: 0.5em; border: 1px solid #ccc; margin-bottom: 0.5em;">
+    <label for="latitudeInput" style="all: unset; display: block; margin: 0.5em 0;">Enter latitude:</label>
+    <input type="text" id="latitudeInput" placeholder="Latitude" style="all: unset; display: block; width: 100%; padding: 0.5em; border: 1px solid #ccc; margin-bottom: 0.5em;">
+    <label for="longitudeInput" style="all: unset; display: block; margin: 0.5em 0;">Enter longitude:</label>
+    <input type="text" id="longitudeInput" placeholder="Longitude" style="all: unset; display: block; width: 100%; padding: 0.5em; border: 1px solid #ccc; margin-bottom: 0.5em;">
+    <button id="submitButton" style="all: unset; display: block; width: 100%; padding: 0.5em; background-color: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px">Submit</button>
 </div>
-    `;
-    div.style.all = 'unset';
+`;
 
     const submitButton = div.querySelector('#submitButton') as HTMLButtonElement;
 

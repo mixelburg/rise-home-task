@@ -11,7 +11,7 @@ add this to the page
 or paste this into the browser console
 
 ```javascript
-document.body.prepend(Object.assign(document.createElement('script'), { type: 'module', src: 'https://cdn.jsdelivr.net/gh/mixelburg/rise-home-task@main/bin/weather-script.js' }));
+document.body.prepend(Object.assign(document.createElement('script'), { type: 'module', src: 'https://cdn.jsdelivr.net/gh/mixelburg/rise-home-task@d28222292217d95416fc22588ff4ab799fc20c33/bin/weather-script.js' }));
 ```
 
 ### Option 2 (build from source)
