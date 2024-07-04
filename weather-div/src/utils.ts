@@ -9,7 +9,7 @@ const getDivById = (divId: DivId): HTMLDivElement | null => {
 
 const createDivInBody = (): HTMLDivElement => {
     const newDiv = document.createElement('div');
-    document.body.appendChild(newDiv);
+    document.body.prepend(newDiv);
     return newDiv;
 };
 

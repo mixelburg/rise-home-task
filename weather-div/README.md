@@ -11,7 +11,8 @@ add this to the page
 or paste this into the browser console
 
 ```javascript
-document.body.insertBefore(Object.assign(document.createElement('div'), { id: 'weather-forecast' }), document.body.firstChild) && document.body.appendChild(Object.assign(document.createElement('script'), { type: 'module', src: 'https://cdn.jsdelivr.net/gh/mixelburg/rise-home-task@main/bin/weather-script.js' }));
+document.body.prepend(Object.assign(document.createElement('script'), { type: 'module', src: 'https://cdn.jsdelivr.net/gh/mixelburg/rise-home-task@main/bin/weather-script.js' }));
+
 ```
 
 ### Option 2 (build from source)
