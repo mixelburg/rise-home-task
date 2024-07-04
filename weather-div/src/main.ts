@@ -1,41 +1,28 @@
-import {getWeather} from "./weather.ts";
+import {getCoordinates, getWeather} from "./weather/weather.ts";
+import {Coordinates} from "./weather/types.ts";
+import {DivId, getOrCreateDiv, isValidNumber} from "./utils.ts";
+import {displayWeatherForecast} from "./weather/display.ts";
 
-type DivId = string | null | undefined;
 
-const getDivById = (divId: DivId): HTMLDivElement | null => {
-    if (divId) {
-        return document.getElementById(divId) as HTMLDivElement | null;
-    }
-    return null;
+const loadRobotoFont = () => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
 };
 
-const createDivInBody = (): HTMLDivElement => {
-    const newDiv = document.createElement('div');
-    document.body.appendChild(newDiv);
-    return newDiv;
-};
-
-const getOrCreateDiv = (divId: DivId): HTMLDivElement => {
-    const div = getDivById(divId);
-    return div ? div : createDivInBody();
-};
-
-const isValidNumber = (value: string): boolean => {
-    const numberRegex = /^-?\d+(\.\d+)?$/;
-    return numberRegex.test(value);
-}
 
 const injectLogic = (div: HTMLDivElement): void => {
     div.innerHTML = `
         <p>Injected logic!</p>
         <label for="cityInput">Enter city:</label>
-        <input type="text" id="cityInput" placeholder="City">
+        <input type="text" id="cityInput" placeholder="City" value="london  ">
         <br>
         <label for="latitudeInput">Enter latitude:</label>
-        <input type="text" id="latitudeInput" placeholder="Latitude" value="51.5">
+        <input type="text" id="latitudeInput" placeholder="Latitude">
         <br>
         <label for="longitudeInput">Enter longitude:</label>
-        <input type="text" id="longitudeInput" placeholder="Longitude" value="-0.11">
+        <input type="text" id="longitudeInput" placeholder="Longitude">
         <br>
         <button id="submitButton">Submit</button>
     `;
@@ -47,25 +34,50 @@ const injectLogic = (div: HTMLDivElement): void => {
         const latitudeInput = (div.querySelector('#latitudeInput') as HTMLInputElement).value;
         const longitudeInput = (div.querySelector('#longitudeInput') as HTMLInputElement).value;
 
-        if (!isValidNumber(latitudeInput)) {
-            alert('Invalid latitude');
-            return;
+        let coordinates: Coordinates | null = null;
+        if (cityInput) {
+            try {
+                coordinates = await getCoordinates(cityInput);
+            } catch (err) {
+                console.error('Failed to get coordinates:', err);
+                alert(`Failed to get coordinates: ${err}`)
+            }
+        } else {
+            if (!isValidNumber(latitudeInput)) {
+                alert('Invalid latitude');
+                return;
+            }
+            if (!isValidNumber(longitudeInput)) {
+                alert('Invalid longitude');
+                return;
+            }
+            coordinates = {
+                lat: parseFloat(latitudeInput),
+                lon: parseFloat(longitudeInput)
+            };
         }
-        if (!isValidNumber(longitudeInput)) {
-            alert('Invalid longitude');
+        if (!coordinates) {
+            alert('Failed to get coordinates');
             return;
         }
 
         console.log('City:', cityInput);
-        console.log('Latitude:', latitudeInput);
-        console.log('Longitude:', longitudeInput);
+        console.log('Coords', coordinates);
 
-        await getWeather(latitudeInput, longitudeInput);
-
+        try {
+            const weather = await getWeather(coordinates);
+            console.log(weather)
+            displayWeatherForecast(weather, div);
+        } catch (err) {
+            console.error('Failed to get weather:', err);
+            alert(`Failed to get weather: ${err}`)
+        }
     });
 };
 
 const main = (divId?: DivId): void => {
+    loadRobotoFont();
+
     const targetDiv = getOrCreateDiv(divId);
     injectLogic(targetDiv);
 };
