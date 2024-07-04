@@ -78,7 +78,7 @@ const getAvgWeatherPerDay = (forecast: WeatherForecast): WeatherForecast => {
 
 
 export const getCoordinates = async (city: string): Promise<Coordinates | null> => {
-    const url = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=${1}&appid=${apiKey}`
+    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=${1}&appid=${apiKey}`
 
     const response = await fetch(url);
     if (!response.ok) throw new Error('Failed to fetch coordinates');
