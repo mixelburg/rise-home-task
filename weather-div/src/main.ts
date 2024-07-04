@@ -14,6 +14,7 @@ const loadRobotoFont = () => {
 
 const injectLogic = (div: HTMLDivElement): void => {
     div.innerHTML = `
+<div style="width: 300px">
         <label for="cityInput">Enter city:</label>
         <input type="text" id="cityInput" placeholder="City" value="london  ">
         <br>
@@ -24,6 +25,7 @@ const injectLogic = (div: HTMLDivElement): void => {
         <input type="text" id="longitudeInput" placeholder="Longitude">
         <br>
         <button id="submitButton">Submit</button>
+</div>
     `;
 
     const submitButton = div.querySelector('#submitButton') as HTMLButtonElement;
