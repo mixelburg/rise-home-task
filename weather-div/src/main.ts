@@ -14,7 +14,6 @@ const loadRobotoFont = () => {
 
 const injectLogic = (div: HTMLDivElement): void => {
     div.innerHTML = `
-        <p>Injected logic!</p>
         <label for="cityInput">Enter city:</label>
         <input type="text" id="cityInput" placeholder="City" value="london  ">
         <br>

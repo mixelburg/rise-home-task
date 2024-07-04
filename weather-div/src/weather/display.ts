@@ -36,6 +36,8 @@ export const displayWeatherForecast = (forecast: WeatherForecast, targetDiv: HTM
         const descriptionP = document.createElement('div');
         descriptionP.style.fontWeight = '700';
         descriptionP.textContent = dayWeather.description;
+        // set height to 50px
+        descriptionP.style.height = '50px';
         dayDiv.appendChild(descriptionP);
 
         const temperatureP = document.createElement('div');
@@ -46,7 +48,7 @@ export const displayWeatherForecast = (forecast: WeatherForecast, targetDiv: HTM
         const windSpeedP = document.createElement('div');
         // make font size smaller
         windSpeedP.style.fontSize = '0.8em';
-        windSpeedP.textContent = `Wind Speed: ${Math.ceil(dayWeather.windSpeed)} km/h`;
+        windSpeedP.textContent = `${Math.ceil(dayWeather.windSpeed)} km/h wind`;
         dayDiv.appendChild(windSpeedP);
 
 
