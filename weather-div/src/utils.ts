@@ -9,7 +9,8 @@ const getDivById = (divId: DivId): HTMLDivElement | null => {
 
 const createDivInBody = (): HTMLDivElement => {
     const newDiv = document.createElement('div');
-    document.body.prepend(newDiv);
+    newDiv.id = 'weather-forecast';
+    document.body.insertBefore(newDiv, document.body.firstChild);
     return newDiv;
 };
 
